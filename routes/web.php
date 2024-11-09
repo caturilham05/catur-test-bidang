@@ -22,3 +22,4 @@ Route::get('/soalno3', [TaskController::class, 'taskThree'])->name('task_three')
 Route::get('/soalno4', [TaskController::class, 'taskFour'])->name('task_four');
 Route::get('/soalno6a', [TaskController::class, 'taskSixA'])->name('task_six_a');
 Route::get('/soalno6b', [TaskController::class, 'taskSixB'])->name('task_six_b');
+Route::get('/soalno7', [TaskController::class, 'taskSeven'])->name('task_seven');

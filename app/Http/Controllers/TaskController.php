@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Helpers\Helpers;
 use App\Models\Siswa;
 use App\Models\user_reqres;
+use App\Models\orders;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Crypt;
 
@@ -195,5 +196,12 @@ class TaskController extends Controller
         }
 
         return response()->json(['status' => 'success', 'message' => 'fetch data from database succesfully', 'result' => $datas], 200);
+    }
+
+    public function taskSeven()
+    {
+        $datas = orders::with(['order_users'])->get();
+
+        return response()->json(['status' => 'success', 'message' => 'fetch data from database successfully', 'result' => $datas], 200);
     }
 }
