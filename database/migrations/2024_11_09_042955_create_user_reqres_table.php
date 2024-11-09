@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('avatar');
-            $table->string('ecnrypted_data');
+            $table->text('ecnrypted_data');
             $table->timestamps();
         });
     }

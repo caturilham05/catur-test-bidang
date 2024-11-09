@@ -110,6 +110,12 @@ class TaskController extends Controller
         return response()->json($arr);
     }
 
+    /**
+     * Soal No 4 Buat Pivot
+     *
+     * @return array
+     *
+     */
     public function taskFour()
     {
         $data = Siswa::select('nama_siswa')
@@ -124,6 +130,20 @@ class TaskController extends Controller
         return view('task_four', compact('data'));
     }
 
+    /**
+     * Soal No 6 Akses data live di reqres.in
+    */
+
+    /**
+     * Soal 6 A
+     *
+     * Akses data dari reqres.in kemudian bulk insert ke database
+     *
+     * table = user_reqres
+     *
+     * @return JSON
+     *
+     */
     public function taskSixA()
     {
         $url = Http::get('https://reqres.in/api/users');
@@ -149,20 +169,31 @@ class TaskController extends Controller
         return response()->json(['status' => 'success', 'message' => 'data dari reqres berhasil ditambahkan', 'result' => $inserted], 200);
     }
 
+    /**
+     * Soal 6 B
+     *
+     * Akses request data dari database dengan parameter id (disini saya pakai email dan emailnya dienkripsi), apabila email yang dienkripsi tidak sesuai, maka muncul error "Payload Invalid"
+     *
+     * @return JSON
+     */
     public function taskSixB()
     {
-        $datas = user_reqres::all()->map(function($user) {
-            return [
-                'id' => $user->id,
-                'reqres_id' => $user->reqres_id,
-                // 'email' => Crypt::decryptString($user->ecnrypted_data),
-                'encrypt_data' => $user->ecnrypted_data,
-                'first_name' => $user->first_name,
-                'last_name' => $user->last_name,
-                'avatar' => $user->avatar,
-                'created_at' => $user->created_at,
-            ];
-        });
-        dd($datas);
+        try {
+            $datas = user_reqres::all()->map(function($user) {
+                return [
+                    'id' => $user->id,
+                    'reqres_id' => $user->reqres_id,
+                    'email' => Crypt::decryptString($user->ecnrypted_data),
+                    'first_name' => $user->first_name,
+                    'last_name' => $user->last_name,
+                    'avatar' => $user->avatar,
+                    'created_at' => $user->created_at,
+                ];
+            });
+        } catch (\Throwable $th) {
+            return response()->json(['status' => 'failed', 'message' => $th->getMessage(), 'result' => []]);
+        }
+
+        return response()->json(['status' => 'success', 'message' => 'fetch data from database succesfully', 'result' => $datas], 200);
     }
 }
